@@ -133,6 +133,39 @@ In this section of our workshop we will create an EC2 instance for our app layer
 - Configure Database Schema
 - Test DB connectivity
 
+**App Instance Deployment.**
+
+- Navigate to the EC2 service dashboard and click on Instances on the left-hand side. Then, click Launch Instances.
+- Select the first Amazon Linux 2 AMI.
+- We'll be using the free tier eligible T.2 micro instance type. Select that and click Next: Configure Instance Details.
+- When configuring the instance details, make sure to select to correct Network, subnet, and IAM role we created. Note that this is the app layer, so use one of the private subnets we created for this layer.
+- We'll be keeping the defaults for storage so click next twice. When you get to the tag screen input a Name as a key and call the instance AppLayer. It's a good idea to tag your instances so you can easily keep track of what each instance was created for. Click Next: Configure Security Group.
+- Earlier we created a security group for our private app layer instances, so go ahead and select that in this next section. Then click Review and Launch. Ignore the warning about connecting to port 22- we don't need to do that.
+- When you get to the Review Instance Launch page, review the details you configured and click Launch. You'll see a pop up about creating a key pair. Since we are using Systems Manager Session Manager to connect to the instance, proceed without a keypair. Click Launch.
+- You'll be taken to a page where you can click launch instance, and you'll see the instance you just launched.
+
+**Connect to Instance.**
+
+- Navigate to your list of running EC2 Instances by clicking on Instances on the left hand side of the EC2 dashboard. When the instance state is running, connect to your instance by clicking the checkmark box to the left of the instance, and click the connect button on the top right corner of the dashboard.Select the Session Manager tab, and click connect. This will open a new browser tab for you.
+*NOTE: If you get a message saying that you cannot connect via session manager, then check that your instances can route to your NAT gateways and verify that you gave the necessary permissions on the IAM role for the Ec2 instance.*
+- When you first connect to your instance like this, you will be logged in as ssm-user which is the default user. Switch to ec2-user by executing the following command in the browser terminal:
+  
+   `sudo -su ec2-user`
+
+- Let’s take this moment to make sure that we are able to reach the internet via our NAT gateways. If your network is configured correctly up till this point, you should be able to ping the google DNS servers:
+
+  `ping 8.8.8.8`
+  
+- You should see a transmission of packets. Stop it by pressing cntrl c.
+
+NOTE: If you can’t reach the internet then you need to double check your route tables and subnet associations to verify if traffic is being routed to your NAT gateway!
+
+**Configure Database.**
+
+- Start by downloading the MySQL CLI:
+  
+
+
 
 
 
