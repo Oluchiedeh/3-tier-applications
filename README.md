@@ -31,6 +31,18 @@ Download the code from this repository into your local environment by running th
 
 # Part 1: Networking and Security
 
+We will build out the VPC networking components and security groups that will add a layer of protection around our EC2 instances, Aurora databases, and Elastic Load Balancers.
+
+**Learning Objectives:**
+
+Create an isolated network with the following components:
+- VPC
+- Subnets
+- Route Tables
+- Internet Gateway
+- NAT gateway
+- Security Groups
+
 
 
 
