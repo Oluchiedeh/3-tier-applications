@@ -24,7 +24,9 @@ Download the code from this repository into your local environment by running th
 3. When adding permissions, include the following AWS-managed policies. You can search for them and select them. These policies will allow our instances to download our code from S3 and use Systems Manager Session Manager to securely connect to our instances without SSH keys through the AWS console.
 
 **AmazonSSMManagedInstanceCore**
+
 **AmazonS3ReadOnlyAccess**
+
 4. Give your role a name, and then click Create Role.
 
 # Part 1: Networking and Security
