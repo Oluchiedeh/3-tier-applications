@@ -152,19 +152,64 @@ In this section of our workshop we will create an EC2 instance for our app layer
   
    `sudo -su ec2-user`
 
-- Let’s take this moment to make sure that we are able to reach the internet via our NAT gateways. If your network is configured correctly up till this point, you should be able to ping the google DNS servers:
+- Let’s take this moment to make sure that we are able to reach the internet via our NAT gateways. If your network is configured correctly up till this point, you should be able to ping the Google DNS servers:
 
   `ping 8.8.8.8`
   
 - You should see a transmission of packets. Stop it by pressing cntrl c.
 
-NOTE: If you can’t reach the internet then you need to double check your route tables and subnet associations to verify if traffic is being routed to your NAT gateway!
+NOTE: If you can’t reach the internet then you need to double-check your route tables and subnet associations to verify if traffic is being routed to your NAT gateway!
 
 **Configure Database.**
 
 - Start by downloading the MySQL CLI:
-  
+  `sudo yum install mysql -y`
+`wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm`
+`sudo yum localinstall mysql57-community-release-el7-8.noarch.rpm`
+`sudo yum install mysql-community-server`
+`sudo rpm --importhttps://repo.mysql.com/RPM-GPG-KEY-MYSQL-2022`
+`sudo yum install mysql`
 
+- Initiate your DB connection with your Aurora RDS writer endpoint. In the following command, replace the RDS writer endpoint and the username, and then execute it in the browser terminal:
+  `mysql -h CHANGE-TO-YOUR-RDS-ENDPOINT -u CHANGE-TO-USER-NAME -p`
+
+  `mysql -h database-1-instance-1.c0ophmqpt70s.us-east-1.rds.amazonaws.com -u admin -p`
+
+- You will then be prompted to type in your password. Once you input the password and hit enter, you should now be connected to your database.
+
+NOTE: If you cannot reach your database, check your credentials and security groups.
+
+- Create a database called webappdb with the following command using the MySQL CLI:
+
+   `CREATE DATABASE webappdb`
+
+- You can verify that it was created correctly with the following command:
+
+   `SHAOW DATABASE`
+
+- Create a data table by first navigating to the database we just created:
+
+   `USE webappdb`
+
+- Then, create the following transactions table by executing this create table command:
+
+  `CREATE TABLE IF NOT EXISTS transactions(id INT NOT NULL
+   AUTO_INCREMENT, amount DECIMAL(10,2), description
+   VARCHAR(100), PRIMARY KEY(id))`
+
+- Verify the table was created:
+
+  `SHOW TABLES`
+
+- Insert data into table for use/testing later:
+
+  `INSERT INTO transactions (amount,description) VALUES ('400','groceries')`
+
+- Verify that your data was added by executing the following command:
+  
+  `SELECT * FROM transactions`
+  
+- When finished, just type exit and hit enter to exit the MySQL client.    
 
 
 
