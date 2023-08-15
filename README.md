@@ -209,7 +209,75 @@ NOTE: If you cannot reach your database, check your credentials and security gro
   
   `SELECT * FROM transactions`
   
-- When finished, just type exit and hit enter to exit the MySQL client.    
+- When finished, just type exit and hit enter to exit the MySQL client.
+
+
+**Configure App Instance.**
+
+- The first thing we will do is update our database credentials for the app tier. To do this, open the application-code/app-tier/DbConfig.js file from the GitHub repo in your favorite text editor on your computer. You’ll see empty strings for the hostname, user, password, and database. Fill this in with the credentials you configured for your database, the writer endpoint of your database as the hostname, and webappdb for the database. Save the file.
+
+*NOTE: This is NOT considered a best practice, and is done for the simplicity of the lab. Moving these credentials to a more suitable place like Secrets Manager is left as an extension for this workshop.*
+- Upload the app-tier folder to the S3 bucket that you created in part 0.
+- Go back to your SSM session. Now we need to install all of the necessary components to run our backend application. Start by installing NVM (node version manager).
+  
+  `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash`
+  
+   `source ~/.bashrc`
+  
+- Next, install a compatible version of Node.js and make sure it's being used
+  
+  `nvm install 16`
+
+  `nvm use 16`
+  
+- PM2 is a daemon process manager that will keep our node.js app running when we exit the instance or if it is rebooted. Install that as well.
+  
+  `npm install -g pm2`
+- Now we need to download our code from our s3 buckets onto our instance. In the command below, replace BUCKET_NAME with the name of the bucket you uploaded the app-tier folder to:
+  
+  `cd ~/`
+  
+  `aws s3 cp s3://BUCKET_NAME/app-tier/ app-tier --recursive`
+
+- Navigate to the app directory, install dependencies, and start the app with pm2.
+  
+  `cd ~/app-tier`
+  
+  `npm install`
+  
+  `pm2 start index.js`
+
+- To make sure the app is running correctly run the following:
+
+   `pm2 list`
+
+- If you see a status online, the app is running. If you see errored, then you need to do some troubleshooting. To look at the latest errors, use this command:
+
+  `pm2 logs`
+
+*NOTE: If you’re having issues, check your configuration file for any typos, and double-check that you have followed all installation commands till now.*
+
+- Right now, pm2 is just making sure our app stays running when we leave the SSM session. However, if the server is interrupted for some reason, we still want the app to start and keep running. This is also important for the AMI we will create:
+
+  `pm2 startup`
+
+*After running this you will see a message similar to this.*
+
+  `[PM2] To setup the Startup Script, copy/paste the following command: sudo env PATH=$PATH:/home/ec2- 
+   user/.nvm/versions/node/v16.0.0/bin /home/ec2-user/.nvm/versions/node/v16.0.0/lib/node_modules/pm2/bin/pm2 startup systemd -u 
+   ec2-user —hp /home/ec2-user`
+
+- DO NOT run the above command, rather you should copy and paste the command in the output you see in your own terminal. After you run it, save the current list of node processes with the following command:
+
+  `pm2 save`
+
+**Test App Tier**
+
+Now let's run a couple of tests to see if our app is configured correctly and can retrieve data from the database.
+
+To hit our health check endpoint, copy this command into your SSM terminal. This is our simple health check endpoint that tells us if the app is simply running.
+
+`curl http://localhost:4000/health`
 
 
 
