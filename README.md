@@ -108,6 +108,36 @@ This section of the workshop will walk you through deploying the database layer 
 - Subnet Groups
 - Multi-AZ Database
 
+**Subnet Groups**
+
+- Navigate to the RDS dashboard in the AWS console and click on Subnet groups on the left-hand side. Click Create DB subnet group.
+- Give your subnet group a name, description, and choose the VPC we created.
+- When adding subnets, make sure to add the subnets we created in each availability zone specifically for our database layer. You may have to navigate back to the VPC dashboard and check to make sure you're selecting the correct subnet IDs.
+
+**Database Deployment**
+
+- Navigate to Databases on the left-hand side of the RDS dashboard and click Create database.
+- We'll now go through several configuration steps. Start with a Standard create for this MySQL-Compatible Amazon Aurora database. Leave the rest of the defaults in the Engine options as default.
+- Under the Templates section choose Dev/Test since this isn't being used for production at the moment. Under Settings set a username and password of your choice and note them down since we'll be using password authentication to access our database.
+- Next, under Availability and durability change the option to create an Aurora Replica or reader node in a different availability zone. Under Connectivity, set the VPC, choose the subnet group we created earlier, and select no for public access.
+- Set the security group we created for the database layer, make sure password authentication is selected as our authentication choice, and create the database.
+- When your database is provisioned, you should see a reader and writer instance in the database subnets of each availability zone. Note down the writer endpoint for your database for later use.
+
+# Part 3: App Tier Instance Deployment.
+
+In this section of our workshop we will create an EC2 instance for our app layer and make all necessary software configurations so that the app can run. The app layer consists of a Node.js application that will run on port 4000. We will also configure our database with some data and tables.
+
+- Learning Objectives:
+- Create App Tier Instance
+- Configure Software Stack
+- Configure Database Schema
+- Test DB connectivity
+
+
+
+
+
+
 
 
 
