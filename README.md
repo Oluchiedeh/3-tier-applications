@@ -279,6 +279,20 @@ To hit our health check endpoint, copy this command into your SSM terminal. This
 
 `curl http://localhost:4000/health`
 
+# Part 4: Internal Load Balancing and Auto Scaling
+
+In this section of the workshop, we will create an Amazon Machine Image (AMI) of the app tier instance we just created, and use that to set up autoscaling with a load balancer in order to make this tier highly available.
+
+**Learning Objectives:**
+
+- Create an AMI of our App Tier
+- Create a Launch Template
+- Configure Autoscaling
+- Deploy Internal Load Balancer
+
+**App Tier AMI**
+- Navigate to Instances on the left-hand side of the EC2 dashboard. Select the app tier instance we created and under Actions select Image and templates. Click Create Image.
+
 
 
 
